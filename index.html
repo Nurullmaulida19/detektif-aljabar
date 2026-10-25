@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Mandiri: Detektif Aljabar Kelas VII</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax untuk Render Rumus Matematika -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-red-50 text-slate-800 min-h-screen pb-12">
+
+    <!-- Header -->
+    <header class="bg-red-600 text-white shadow-md py-6 px-4 mb-8">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <span class="bg-red-700 text-red-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Kelas VII • Mandiri</span>
+                <h1 class="text-3xl font-bold mt-2">🔍 Detektif Aljabar</h1>
+                <p class="text-red-100 text-sm mt-1">Lembar Kerja Peserta Didik Interaktif</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 space-y-6">
+        
+        <!-- Identitas Detektif -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
+            <h2 class="text-lg font-semibold text-red-900 mb-4 flex items-center gap-2">
+                <span>🕵️‍♂️</span> Identitas Detektif
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Nama Lengkap:</label>
+                    <input type="text" placeholder="Masukkan nama Anda..." class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Kelas:</label>
+                    <input type="text" placeholder="Contoh: VII A" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+            </div>
+        </section>
+
+        <!-- Modul 1 -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
+            <h2 class="text-lg font-semibold text-red-900 mb-2 flex items-center gap-2">
+                <span>🔥</span> Pemanasan Detektif: Bilangan Misterius
+            </h2>
+            <p class="text-sm text-slate-600 mb-4">Temukan nilai kotak misterius di bawah ini!</p>
+            
+            <div class="space-y-4">
+                <div class="p-4 bg-red-50/50 rounded-xl border border-red-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <span class="font-medium text-slate-700">1) $\Box + 3 = 8 \rightarrow \Box =$</span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="ans1" class="w-20 px-3 py-1.5 border border-slate-300 rounded-lg text-center bg-white">
+                        <button onclick="checkAnswer(1, 5)" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer">Cek</button>
+                        <span id="feedback1" class="text-sm font-semibold"></span>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-red-50/50 rounded-xl border border-red-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <span class="font-medium text-slate-700">2) $2 \times \Box = 10 \rightarrow \Box =$</span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="ans2" class="w-20 px-3 py-1.5 border border-slate-300 rounded-lg text-center bg-white">
+                        <button onclick="checkAnswer(2, 5)" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer">Cek</button>
+                        <span id="feedback2" class="text-sm font-semibold"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modul 2 -->
+        <section class="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
+            <h2 class="text-lg font-semibold text-red-900 mb-2 flex items-center gap-2">
+                <span>🔍</span> Penemuan 1: Bedah Bentuk Ini!
+            </h2>
+            <p class="text-sm text-slate-600 mb-4">Perhatikan bentuk aljabar: $5a - 2b + 9$</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 border border-red-100 rounded-xl bg-red-50/30">
+                    <label class="block text-xs font-bold text-red-700 uppercase mb-1">Variabel</label>
+                    <input type="text" placeholder="Pisahkan dengan koma" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
+                </div>
+                <div class="p-4 border border-red-100 rounded-xl bg-red-50/30">
+                    <label class="block text-xs font-bold text-red-700 uppercase mb-1">Koefisien</label>
+                    <input type="text" placeholder="Masukkan koefisien" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
+                </div>
+                <div class="p-4 border border-red-100 rounded-xl bg-red-50/30">
+                    <label class="block text-xs font-bold text-red-700 uppercase mb-1">Konstanta</label>
+                    <input type="text" placeholder="Masukkan konstanta" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function checkAnswer(id, correctAnswer) {
+            const userVal = document.getElementById('ans' + id).value;
+            const fb = document.getElementById('feedback' + id);
+            if(parseInt(userVal) === correctAnswer) {
+                fb.textContent = "✔ Benar!";
+                fb.className = "text-sm font-semibold text-emerald-600";
+            } else {
+                fb.textContent = "✖ Coba lagi";
+                fb.className = "text-sm font-semibold text-rose-600";
+            }
+        }
+    </script>
+</body>
+</html>
