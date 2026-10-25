@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
+        .drag-card { cursor: grab; user-select: none; touch-action: none; }
+        .drag-card:active { cursor: grabbing; }
     </style>
 </head>
 <body class="bg-red-50 text-slate-800 min-h-screen pb-12">
@@ -18,7 +20,7 @@
         <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center">
             <div>
                 <span class="bg-red-700 text-red-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Kelas VII • Mandiri</span>
-                <h1 class="text-3xl font-bold mt-2">🔍 Detektif Aljabar</h1>
+                <h1 class="text-3xl font-bold mt-2">🕵️‍♂️ Detektif Aljabar</h1>
                 <p class="text-red-100 text-sm mt-1">Lembar Kerja Peserta Didik Interaktif</p>
             </div>
         </div>
@@ -29,16 +31,16 @@
         <!-- Identitas Detektif -->
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
             <h2 class="text-lg font-semibold text-red-900 mb-4 flex items-center gap-2">
-                <span>🕵️‍♂️</span> Identitas Detektif
+                <span>📝</span> Identitas Detektif
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Nama Lengkap:</label>
-                    <input type="text" placeholder="Masukkan nama Anda..." class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <input type="text" id="nama" placeholder="Masukkan nama Anda..." class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Kelas:</label>
-                    <input type="text" placeholder="Contoh: VII A" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <input type="text" id="kelas" placeholder="Contoh: VII A" class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
                 </div>
             </div>
         </section>
@@ -52,7 +54,7 @@
             
             <div class="space-y-4">
                 <div class="p-4 bg-red-50/50 rounded-xl border border-red-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <span class="font-medium text-slate-700">1) [ 🧰 ] + 3 = 8 &nbsp;&rightarrow;&nbsp; [ 🧰 ] =</span>
+                    <span class="font-medium text-slate-700">1) [ Kotak ] + 3 = 8 &nbsp;&rarr;&nbsp; [ Kotak ] =</span>
                     <div class="flex items-center gap-2">
                         <input type="number" id="ans1" class="w-20 px-3 py-1.5 border border-slate-300 rounded-lg text-center bg-white">
                         <button onclick="checkAnswer(1, 5)" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer">Cek</button>
@@ -61,7 +63,7 @@
                 </div>
 
                 <div class="p-4 bg-red-50/50 rounded-xl border border-red-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <span class="font-medium text-slate-700">2) 2 &times; [ 🧰 ] = 10 &nbsp;&rightarrow;&nbsp; [ 🧰 ] =</span>
+                    <span class="font-medium text-slate-700">2) 2 &times; [ Kotak ] = 10 &nbsp;&rarr;&nbsp; [ Kotak ] =</span>
                     <div class="flex items-center gap-2">
                         <input type="number" id="ans2" class="w-20 px-3 py-1.5 border border-slate-300 rounded-lg text-center bg-white">
                         <button onclick="checkAnswer(2, 5)" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition cursor-pointer">Cek</button>
@@ -76,46 +78,52 @@
             <h2 class="text-lg font-semibold text-red-900 mb-2 flex items-center gap-2">
                 <span>🔍</span> Penemuan 1: Bedah Bentuk Ini!
             </h2>
-            <p class="text-sm text-slate-600 mb-4 font-medium text-red-800">Perhatikan bentuk aljabar: 5a - 2b + 9</p>
+            <p class="text-sm text-slate-600 mb-4 font-medium text-red-800">Perhatikan bentuk aljabar: <strong>5a - 2b + 9</strong></p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div class="p-4 border border-red-100 rounded-xl bg-red-50/30">
                     <label class="block text-xs font-bold text-red-700 uppercase mb-1">Variabel</label>
-                    <input type="text" placeholder="Pisahkan dengan koma" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
+                    <input type="text" id="m2_var" placeholder="Contoh: a, b" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
                 </div>
                 <div class="p-4 border border-red-100 rounded-xl bg-red-50/30">
                     <label class="block text-xs font-bold text-red-700 uppercase mb-1">Koefisien</label>
-                    <input type="text" placeholder="Masukkan koefisien" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
+                    <input type="text" id="m2_koef" placeholder="Contoh: 5, -2" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
                 </div>
                 <div class="p-4 border border-red-100 rounded-xl bg-red-50/30">
                     <label class="block text-xs font-bold text-red-700 uppercase mb-1">Konstanta</label>
-                    <input type="text" placeholder="Masukkan konstanta" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
+                    <input type="text" id="m2_konst" placeholder="Contoh: 9" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white">
                 </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="checkModul2()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Cek Analisis</button>
+                <span id="feedback_m2" class="text-sm font-semibold"></span>
             </div>
         </section>
 
         <!-- Modul 3 -->
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-red-100">
             <h2 class="text-lg font-semibold text-red-900 mb-2 flex items-center gap-2">
-                <span>🃏</span> Penemuan 2: Kartu Suku Sejenis
+                <span>🃏</span> Penemuan 2: Kelompokkan Suku Sejenis
             </h2>
-            <p class="text-sm text-slate-600 mb-4">Kelompokkan suku-suku berikut ke dalam kategori yang tepat: 3x, 5y, -2x, 7, 4y, -9</p>
+            <p class="text-sm text-slate-600 mb-4">Pilihlah dan tuliskan suku-suku yang sejenis ke dalam kotak kelompok masing-masing dari pilihan berikut: <br><strong class="text-red-700">3x, &nbsp; 5y, &nbsp; -2x, &nbsp; 7, &nbsp; 4y, &nbsp; -9</strong></p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div class="p-4 border-2 border-dashed border-red-200 rounded-xl bg-red-50/20">
                     <h3 class="font-bold text-red-800 mb-2 text-sm">Kelompok Suku x</h3>
-                    <div class="min-h-[60px] bg-white p-2 rounded-lg border border-red-100 flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-md shadow-xs">3x</span>
-                        <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-md shadow-xs">-2x</span>
-                    </div>
+                    <input type="text" id="m3_x" placeholder="Pisahkan dengan koma..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
                 </div>
                 <div class="p-4 border-2 border-dashed border-red-200 rounded-xl bg-red-50/20">
                     <h3 class="font-bold text-red-800 mb-2 text-sm">Kelompok Suku y</h3>
-                    <div class="min-h-[60px] bg-white p-2 rounded-lg border border-red-100 flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-md shadow-xs">5y</span>
-                        <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-md shadow-xs">4y</span>
-                    </div>
+                    <input type="text" id="m3_y" placeholder="Pisahkan dengan koma..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
                 </div>
+                <div class="p-4 border-2 border-dashed border-red-200 rounded-xl bg-red-50/20">
+                    <h3 class="font-bold text-red-800 mb-2 text-sm">Kelompok Konstanta</h3>
+                    <input type="text" id="m3_k" placeholder="Pisahkan dengan koma..." class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="checkModul3()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Cek Kelompok Suku</button>
+                <span id="feedback_m3" class="text-sm font-semibold"></span>
             </div>
         </section>
 
@@ -124,11 +132,14 @@
             <h2 class="text-lg font-semibold text-red-900 mb-2 flex items-center gap-2">
                 <span>🏡</span> Misi Utama: Kebun Pak Budi
             </h2>
-            <p class="text-sm text-slate-600 mb-4">Pak Budi memiliki 2 petak kebun cabai dan beberapa buah cabai satuan. Nyatakan bentuk aljabarnya!</p>
+            <p class="text-sm text-slate-600 mb-4">Pak Budi memiliki <strong>2 petak kebun cabai</strong> dan <strong>3 buah cabai satuan</strong>. Nyatakan bentuk aljabarnya!</p>
             <div class="p-4 bg-red-50/50 rounded-xl border border-red-100 space-y-3">
                 <p class="text-sm text-slate-700">Jika 1 petak kebun dimisalkan <strong>x</strong> dan 1 buah cabai satuan dimisalkan <strong>y</strong>:</p>
-                <input type="text" placeholder="Tuliskan bentuk aljabarnya di sini..." class="w-full px-4 py-2 border border-slate-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
-                <button class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Periksa Misi</button>
+                <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+                    <input type="text" id="m4_ans" placeholder="Tuliskan bentuk aljabarnya di sini..." class="w-full md:w-80 px-4 py-2 border border-slate-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <button onclick="checkModul4()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition cursor-pointer">Periksa Misi Utama</button>
+                </div>
+                <div id="feedback_m4" class="text-sm font-semibold pt-1"></div>
             </div>
         </section>
 
@@ -143,6 +154,53 @@
                 fb.className = "text-sm font-semibold text-emerald-600";
             } else {
                 fb.textContent = "✖ Coba lagi";
+                fb.className = "text-sm font-semibold text-rose-600";
+            }
+        }
+
+        function checkModul2() {
+            const v = document.getElementById('m2_var').value.toLowerCase().replace(/\s+/g, '');
+            const k = document.getElementById('m2_koef').value.replace(/\s+/g, '');
+            const c = document.getElementById('m2_konst').value.replace(/\s+/g, '');
+            const fb = document.getElementById('feedback_m2');
+
+            if((v === "a,b" || v === "b,a") && (k === "5,-2" || k === "-2,5") && c === "9") {
+                fb.textContent = "✔ analisis Anda sangat akurat!";
+                fb.className = "text-sm font-semibold text-emerald-600";
+            } else {
+                fb.textContent = "✖ Masih ada variabel/koefisien/konstanta yang belum tepat.";
+                fb.className = "text-sm font-semibold text-rose-600";
+            }
+        }
+
+        function checkModul3() {
+            const x = document.getElementById('m3_x').value.toLowerCase().replace(/\s+/g, '');
+            const y = document.getElementById('m3_y').value.toLowerCase().replace(/\s+/g, '');
+            const k = document.getElementById('m3_k').value.replace(/\s+/g, '');
+            const fb = document.getElementById('feedback_m3');
+
+            const validX = (x === "3x,-2x" || x === "-2x,3x");
+            const validY = (y === "5y,4y" || y === "4y,5y");
+            const validK = (k === "7,-9" || k === "-9,7");
+
+            if(validX && validY && validK) {
+                fb.textContent = "✔ Pengelompokan suku Anda sempurna!";
+                fb.className = "text-sm font-semibold text-emerald-600";
+            } else {
+                fb.textContent = "✖ Pengelompokan belum pas. Periksa kembali tanda positif/negatifnya.";
+                fb.className = "text-sm font-semibold text-rose-600";
+            }
+        }
+
+        function checkModul4() {
+            const ans = document.getElementById('m4_ans').value.toLowerCase().replace(/\s+/g, '');
+            const fb = document.getElementById('feedback_m4');
+
+            if(ans === "2x+3y" || ans === "3y+2x") {
+                fb.textContent = "🎉 Selamat! Misi Utama Berhasil Dipecahkan! (Bentuk Aljabar: 2x + 3y)";
+                fb.className = "text-sm font-semibold text-emerald-600";
+            } else {
+                fb.textContent = "✖ Jawaban belum tepat. Ingat: 2 petak (x) dan 3 buah (y).";
                 fb.className = "text-sm font-semibold text-rose-600";
             }
         }
