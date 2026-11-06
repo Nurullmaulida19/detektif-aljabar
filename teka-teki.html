@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teka-teki Detektif: Kasus Kotak Misterius</title>
+<style>
+:root{
+  --desk:#8B1A1A; --desk2:#6A0F0F; --paper:#FFF4E0; --ink:#2B1B1B; --stamp:#D62839;
+  --gold:#FFB703; --pink:#FDECEC; --ok:#2E7D32; --line:#E6CFA8;
+  --head:"Trebuchet MS","Segoe UI",Verdana,sans-serif; --body:"Segoe UI",Verdana,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--body);color:var(--ink);background:var(--desk);
+  background-image:radial-gradient(circle at 20% 10%,#a52626 0,transparent 45%),radial-gradient(circle at 90% 90%,var(--desk2) 0,transparent 50%);
+  min-height:100vh;padding:20px 14px 40px}
+main{max-width:640px;margin:0 auto}
+h1{font-family:var(--head);color:#fff;font-size:clamp(1.5rem,5vw,2.1rem);margin:0 0 4px;line-height:1.15}
+.sub{color:#FFD6DA;margin:0 0 16px;font-size:1rem}
+.tabs{display:flex;gap:8px;margin:0 0 -1px 10px;position:relative;z-index:1}
+.tab{font-family:var(--head);font-weight:700;font-size:.95rem;padding:8px 16px;border-radius:10px 10px 0 0;background:#c9a56b;color:#5a3b12;border:0}
+.tab[aria-current="step"]{background:var(--paper);color:var(--desk)}
+.tab.done{background:#e9c98c;color:var(--ok)}
+.paper{background:var(--paper);border-radius:6px 14px 14px 14px;padding:26px 24px 28px;box-shadow:0 10px 30px rgba(0,0,0,.35);position:relative;overflow:hidden;
+  background-image:repeating-linear-gradient(transparent 0 31px,rgba(150,110,60,.13) 31px 32px)}
+.paper h2{font-family:var(--head);margin:0 0 8px;font-size:1.35rem;color:var(--desk)}
+.story{font-size:1.1rem;line-height:1.55;margin:0 0 18px;max-width:60ch}
+.eq{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-family:var(--head);font-weight:800;font-size:clamp(1.8rem,8vw,2.8rem);margin:6px 0 20px}
+.mbox{display:inline-grid;place-items:center;min-width:1.7em;height:1.7em;border:3px dashed var(--desk);border-radius:10px;background:#fff;color:var(--desk);transition:transform .5s ease,background .3s}
+.mbox.open{border-style:solid;background:var(--gold);transform:rotateY(360deg)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+input[type=number]{width:7.5em;font:700 1.4rem var(--head);text-align:center;padding:10px;border:3px solid var(--desk);border-radius:10px;background:#fff;color:var(--ink)}
+button{font:700 1rem var(--head);cursor:pointer;border-radius:10px;padding:11px 18px;border:3px solid var(--desk);background:var(--desk);color:#fff}
+button.alt{background:#fff;color:var(--desk)}
+button:hover{filter:brightness(1.1)}
+button:focus-visible,input:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.opts{display:grid;gap:10px;margin:0 0 6px}
+.opt{text-align:left;background:#fff;color:var(--ink);font-weight:600;font-family:var(--body);line-height:1.4}
+.opt.wrong{background:var(--pink);border-color:var(--stamp)}
+.opt.right{background:#E8F5E9;border-color:var(--ok)}
+.fb{min-height:1.6em;margin:14px 0 0;font-weight:700;text-align:center}
+.fb.bad{color:var(--stamp)} .fb.good{color:var(--ok)}
+.hint{margin:10px auto 0;max-width:46ch;background:var(--pink);border-left:6px solid var(--gold);padding:10px 14px;border-radius:6px;font-size:.98rem}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.stamp{position:absolute;right:16px;top:14px;transform:rotate(12deg);border:4px solid var(--stamp);color:var(--stamp);font:800 1.25rem var(--head);padding:4px 12px;border-radius:8px;opacity:0;pointer-events:none}
+.stamp.show{animation:stamp .35s ease-out forwards}
+@keyframes stamp{from{transform:rotate(12deg) scale(2.2);opacity:0}to{transform:rotate(12deg) scale(1);opacity:.9}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.badge{display:grid;place-items:center;width:132px;height:132px;margin:0 auto 14px;border-radius:50%;background:var(--gold);border:6px solid var(--desk);font:800 3.4rem var(--head);color:var(--desk)}
+.finish{text-align:center}
+.finish p{max-width:52ch;margin:0 auto 12px;line-height:1.55;font-size:1.05rem}
+.sum{background:#fff;border:2px solid var(--line);border-radius:10px;padding:12px 16px;text-align:left;max-width:46ch;margin:14px auto}
+.sum div{margin:4px 0}
+.foot{color:#FFD6DA;text-align:center;font-size:.85rem;margin-top:16px}
+@media (prefers-reduced-motion:reduce){.mbox,.stamp.show,.shake{animation:none;transition:none}.stamp.show{opacity:.9}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Kasus Kotak Misterius</h1>
+  <p class="sub">Pecahkan 3 kasus untuk mendapat lencana Detektif Aljabar.</p>
+  <div class="tabs" id="tabs" aria-label="Kemajuan kasus"></div>
+  <section class="paper" id="paper" aria-live="polite"></section>
+  <p class="foot">Detektif Aljabar • Matematika Kelas VII • Nurul Maulida Muhlis</p>
+</main>
+
+<script>
+const CASES = [
+  { type:"num", story:"Detektif menemukan sebuah kotak berisi bilangan rahasia. Petunjuk di kertas: jika isi kotak ditambah 3, hasilnya 8.", eq:["[]","+","3","=","8"], answer:5,
+    hint:"Berapa yang jika ditambah 3 menjadi 8? Coba hitung 8 − 3.", ok:"Tepat! Isi kotak itu 5." },
+  { type:"num", story:"Kotak kedua lebih licin. Petunjuknya: jika isi kotak dikalikan 2, hasilnya 10.", eq:["2","×","[]","=","10"], answer:5,
+    hint:"Bagi 10 dengan 2 untuk mencari isi kotak.", ok:"Hebat! Isi kotak itu 5." },
+  { type:"choice", story:"Kasus terakhir di Toko Alat Tulis. Harga satu pensil dirahasiakan dan berubah setiap hari. Kamu membeli 3 pensil. Bagaimana menuliskan total harganya dengan satu simbol?",
+    eq:["3","×","[]"], opts:["5 pensil","3p, dengan p = harga satu pensil","3 + p"], answer:1,
+    hint:"Satu pensil harganya p. Tiga pensil berarti 3 kali p.",
+    ok:"Luar biasa! Huruf p mewakili harga yang belum diketahui. Cara menulis seperti inilah yang akan kita pelajari." }
+];
+let cur = 0, solved = [];
+
+const $ = (s) => document.querySelector(s);
+const tabs = $("#tabs"), paper = $("#paper");
+
+function renderTabs(){
+  tabs.innerHTML = "";
+  CASES.forEach((c,i)=>{
+    const b = document.createElement("span");
+    b.className = "tab" + (solved[i] ? " done" : "");
+    b.textContent = (solved[i] ? "✔ " : "") + "Kasus " + (i+1);
+    if(i===cur && !finished) b.setAttribute("aria-current","step");
+    tabs.appendChild(b);
+  });
+}
+let finished = false;
+
+function eqHtml(c, open){
+  return c.eq.map(t => t==="[]" ? '<span class="mbox'+(open?' open':'')+'" id="mbox">'+(open? (c.type==="num"? c.answer : "p") : "?")+'</span>' : '<span>'+t+'</span>').join("");
+}
+
+function render(){
+  finished = false; renderTabs();
+  const c = CASES[cur];
+  let body = '<div class="stamp" id="stamp">Terpecahkan!</div><h2>Kasus '+(cur+1)+' dari '+CASES.length+'</h2><p class="story">'+c.story+'</p><div class="eq" id="eq">'+eqHtml(c,false)+'</div>';
+  if(c.type==="num"){
+    body += '<form class="row" id="f" autocomplete="off"><label for="ans" class="sr" style="position:absolute;left:-9999px">Jawabanmu</label><input id="ans" type="number" inputmode="numeric" placeholder="?" required><button type="submit">Cek jawaban</button></form>';
+  } else {
+    body += '<div class="opts" id="opts">'+c.opts.map((o,i)=>'<button type="button" class="opt alt" data-i="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>').join("")+'</div>';
+  }
+  body += '<p class="fb" id="fb"></p><div id="hintbox"></div><div class="actions" id="actions"><button type="button" class="alt" id="hbtn">Minta petunjuk</button></div>';
+  paper.innerHTML = body;
+  $("#hbtn").onclick = () => { $("#hintbox").innerHTML = '<p class="hint"><strong>Petunjuk:</strong> '+c.hint+'</p>'; };
+  if(c.type==="num"){
+    $("#f").onsubmit = (e) => { e.preventDefault(); check(Number($("#ans").value)); };
+    $("#ans").focus();
+  } else {
+    document.querySelectorAll(".opt").forEach(b => b.onclick = () => check(Number(b.dataset.i), b));
+  }
+}
+
+function check(val, btn){
+  const c = CASES[cur], fb = $("#fb");
+  if(val === c.answer){
+    solved[cur] = true; renderTabs();
+    fb.className = "fb good"; fb.textContent = c.ok;
+    $("#eq").innerHTML = eqHtml(c,true);
+    requestAnimationFrame(()=>{ const m=$("#mbox"); if(m) m.classList.add("open"); });
+    $("#stamp").classList.add("show");
+    if(btn) btn.classList.add("right");
+    if(c.type==="num"){ $("#ans").disabled = true; $("#f button").disabled = true; }
+    else document.querySelectorAll(".opt").forEach(b => b.disabled = true);
+    $("#hintbox").innerHTML = ""; $("#hbtn").remove();
+    const next = document.createElement("button");
+    next.type = "button"; next.textContent = cur < CASES.length-1 ? "Lanjut ke kasus berikutnya" : "Lihat lencanamu";
+    next.onclick = () => { if(cur < CASES.length-1){ cur++; render(); } else finish(); };
+    $("#actions").appendChild(next); next.focus();
+  } else {
+    fb.className = "fb bad"; fb.textContent = "Belum tepat. Coba lagi, atau minta petunjuk.";
+    const el = btn || $("#ans"); el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake");
+    if(btn){ btn.classList.add("wrong"); }
+  }
+}
+
+function finish(){
+  finished = true; renderTabs();
+  paper.innerHTML = '<div class="finish"><div class="badge" aria-hidden="true">🕵</div><h2>Lencana Detektif Aljabar untukmu!</h2>'+
+    '<p>Kamu memecahkan 3 kasus. Pelajari satu hal penting: <strong>huruf dapat mewakili bilangan yang belum diketahui</strong>, seperti p untuk harga satu pensil.</p>'+
+    '<div class="sum"><div>Kasus 1: □ + 3 = 8, isi kotak = 5</div><div>Kasus 2: 2 × □ = 10, isi kotak = 5</div><div>Kasus 3: 3 pensil = 3p</div></div>'+
+    '<div class="actions"><button type="button" id="again">Main lagi</button></div></div>';
+  $("#again").onclick = () => { cur = 0; solved = []; render(); };
+}
+render();
+</script>
+</body>
+</html>
